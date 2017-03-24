@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import DATA from '../data';
+import CONFIG from '../data';
 
-const ReactHighcharts = require('react-highcharts');
+const ReactHighstock = require('react-highcharts/ReactHighstock.src');
 
 export default class StockGraph extends Component {
   render() {
     return (
-      <ReactHighcharts config={DATA} />
+      <ReactHighstock config={CONFIG} />
     );
   }
 }
