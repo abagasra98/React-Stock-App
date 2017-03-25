@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import StockGraph from './StockGraph';
+import StockForm from './StockForm';
 
 export default class StockApp extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { stockTicker: 'AAPL', data: [] }; // change to empty string
+    this.state = { stockTicker: '', data: [] }; // change to empty string
     this.getStockData = this.getStockData.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.loadDataFromServer = this.loadDataFromServer.bind(this);
   }
 
   componentDidMount() {
@@ -24,16 +27,30 @@ export default class StockApp extends Component {
       });
   }
 
-  render() {
+  loadDataFromServer(ticker) {
+    axios.get(`${this.props.url}/${ticker}`)
+      .then((res) => {
+        this.setState({ stockTicker: ticker, data: res.data });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  handleFormSubmit(ticker) {
+    this.loadDataFromServer(ticker);
+  }
+
+  getChartData() {
     const config = {
       rangeSelector: {
         selected: 1,
       },
       title: {
-        text: 'AAPL Stock Price',
+        text: `${this.state.stockTicker} Stock Price`,
       },
       series: [{
-        name: 'AAPL',
+        name: this.state.stockTicker,
         data: this.state.data,
         tooltip: {
           valueDecimal: 2,
@@ -41,8 +58,15 @@ export default class StockApp extends Component {
       }],
     };
 
+    return config;
+  }
+
+  render() {
     return (
-      <StockGraph config={config} />
+      <div>
+        <StockGraph config={this.getChartData()} />
+        <StockForm onFormSubmit={this.handleFormSubmit} />
+      </div>
     );
   }
 }

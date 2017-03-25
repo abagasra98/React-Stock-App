@@ -5,12 +5,14 @@
   "dependencies": {
     "axios": "^0.15.3",
     "body-parser": "^1.17.1",
+    "check-ticker-symbol": "^1.0.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "foreman": "^2.0.0",
     "highcharts": "^5.0.9",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
+    "react-bootstrap": "^0.30.8",
     "react-dom": "^15.4.2",
     "react-highcharts": "^11.5.0"
   },
