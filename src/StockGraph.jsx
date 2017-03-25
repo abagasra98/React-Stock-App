@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import CONFIG from '../data';
+import React from 'react';
 
 const ReactHighstock = require('react-highcharts/ReactHighstock.src');
 
-export default class StockGraph extends Component {
-  render() {
-    return (
-      <ReactHighstock config={CONFIG} />
-    );
-  }
+export default function StockGraph(props) {
+  return (
+    <ReactHighstock config={props.config} />
+  );
 }
+
+StockGraph.propTypes = {
+  config: React.PropTypes.object.isRequired,
+};

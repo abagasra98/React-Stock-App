@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import StockGraph from './StockGraph';
+import StockApp from './StockApp';
 
 ReactDOM.render(
-  <StockGraph />,
+  <StockApp url="http://localhost:3001/api/stocks" />,
   document.getElementById('root')
 );

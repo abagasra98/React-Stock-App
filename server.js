@@ -18,19 +18,34 @@ app.use((req, res, next) => {
   next();
 });
 
+// export helper functions to separate 'utils' files
+function parseJsonResponse(response) {
+  const parsedData = [];
+  const dataArray = response.dataset.data;
+
+  dataArray.forEach((dayData) => {
+    const parsedDayData = [];
+    parsedDayData.push(Math.floor(Date.parse(dayData[0]))); // make indices constants
+    parsedDayData.push(dayData[1]);
+    parsedData.push(parsedDayData);
+  });
+
+  return parsedData.reverse();
+}
+
 router.get('/', (req, res) => {
   res.json({ message: 'API Initialized' });
 });
 
 router.route('/stocks/:stock_ticker')
   .get((req, res) => {
-    const baseUrl = 'https://www.quandl.com/api/v3/datasets/WIKI/';
-    const currentTimestamp = '2017-03-24';// Math.floor(Date.now() / 1000);
-    const beginTimestamp = '2017-01-01';// Math.floor(Date.parse('01/01/2017') / 1000);
+    const baseUrl = 'https://www.quandl.com/api/v3/datasets/WIKI/'; // export to helper func
+    const currentTimestamp = '2017-03-25';// Math.floor(Date.now() / 1000);
+    const beginTimestamp = '2016-01-01';// Math.floor(Date.parse('01/01/2017') / 1000);
     const requestUrl = `${baseUrl}${req.params.stock_ticker}.json?start_date=${beginTimestamp}&end_date=${currentTimestamp}&api_key=${process.env.QUANDL_API_KEY}`;
 
     axios.get(requestUrl)
-      .then(response => res.send(response.data))
+      .then(response => res.send(parseJsonResponse(response.data)))
       .catch(err => res.send(err));
   });
 
